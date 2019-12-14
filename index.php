@@ -64,7 +64,7 @@ function ver_quien_gano($listaResultados):array {
     $i=0;
     $ganador=0;
     $cuanto=0;
-    $lista=array(count($listaResultados));
+    $lista=array_fill(0,count($listaResultados),0);
     while ($i < count($listaResultados)){
         if ($listaResultados[$i] > $cuanto){
             $ganador= $i;
@@ -79,6 +79,7 @@ function ver_quien_gano($listaResultados):array {
 function sumar_resultado_partidas($lista_resultados): array{
     $j=0;
     $cantidad_jugadores = count($lista_resultados[0]);
+    //print("cantidad de jugadores: " . $cantidad_jugadores);
     $cantidad_repeticiones = count($lista_resultados);
     $resultado_total = array_fill(0,$cantidad_jugadores,0);
     $res = array_fill(0,$cantidad_jugadores,"");
@@ -88,7 +89,7 @@ function sumar_resultado_partidas($lista_resultados): array{
             $resultado_total[$j] = $resultado_total[$j] + $lista_resultados[$i][$j];
             $i = $i + 1;
         }
-        $res[$j] = "Jugador " . $j . ":" . $resultado_total[$j] . " partidas ganadas \n"; 
+        $res[$j] = "Jugador " . $j . ": " . $resultado_total[$j] . " partidas ganadas \n"; 
         $j = $j +1;
     }
     foreach ($res as $k => $v){
@@ -99,13 +100,14 @@ function sumar_resultado_partidas($lista_resultados): array{
 
 function experimentar($repeticiones, $jugadores): array{
     $i=0;
-    $resultado_final = array();
+    $resultado_final = array($repeticiones);
     while ($i < $repeticiones){
         print("Repeticion n°" . $i . ": \n");
         print("\n");
         $mazo = crear_mazo(round($jugadores/2));
         $resultado_parcial = ver_quien_gano(jugar_varios($mazo, $jugadores));
-        $resultado_final[]= $resultado_parcial;
+        $resultado_final[$i]= $resultado_parcial;
+        print("Resultado final: \n");
         $i = $i + 1;
     }
     return sumar_resultado_partidas($resultado_final);
